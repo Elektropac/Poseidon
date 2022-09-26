@@ -6,6 +6,13 @@ void serialDataHandler() {
 
     case 1:
       Serial.println("Function 1");
+      for(int i = 0; i < 16; i++)
+      {
+        //c = bitSet(InBase[i], i);
+        bitWrite(c, i, InBase[i]);
+        
+      }
+      ShiftData();
       break;
 
     case 2:
@@ -47,7 +54,7 @@ void GetSerialData() {
 void UseSerialData() {
   if ((Ccount > 0) and (Serial.available() < 1)) {
     int arrayNr = 0;
-    for (int i = 0; i < 12; i++)  //erase old data
+    for (int i = 0; i < InBaseQuantity+2; i++)  //erase old data
     {
       InBaseStr[i] = "";
     }
@@ -63,10 +70,10 @@ void UseSerialData() {
     // Address = InBaseStr[1].toInt();
     Function = InBaseStr[1].toInt();
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 16; i++) {//-----------------------------------------------------------------
       InBase[i] = InBaseStr[i + 3].toInt();
     }
-
+   
     serialDataHandler();
 
     Bcount++;
