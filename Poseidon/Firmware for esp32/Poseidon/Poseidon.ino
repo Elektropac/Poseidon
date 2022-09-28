@@ -1,18 +1,36 @@
 //#include <avr/wdt.h>
+#include <WiFi.h>
+#include <WebServer.h>
+
+/* Put your SSID & Password */
+const char* ssid = "MCScontrol";  // Enter SSID here
+const char* password = "12345678";  //Enter Password here
+
+/* Put IP Address details */
+IPAddress local_ip(192,168,1,1);
+IPAddress gateway(192,168,1,1);
+IPAddress subnet(255,255,255,0);
+
+WebServer server(80);
+
+int Update = 1;
+
+
 
 #define InBaseQuantity 32
 #define OutBaseQuantity 32
 
 #define arrayLines 20  //buffer size
 
-int RelayState[16];
-int InputState[16];
+int RelayState[20]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int InputState[20]={0,1,0,1,0,1,0,1,1,0,0,1,1,0,0,1,0};
 
 //for the 74595 and 74165 registre
 int DataOutPin = 13;
 int DataInPin = 35; 
 int ClockPin = 14;
 int LatchPin = 15;
+int LoadParallel = 0;
 
 int c = 0b0000000000000000;
 
@@ -35,11 +53,19 @@ void setup() {
   //wdt_enable(WDTO_8S);
   Serial.println("Setup Completed");  //Serial ready
 
-  pinMode(0, OUTPUT);digitalWrite(0, LOW);
+  pinMode(LoadParallel, OUTPUT);digitalWrite(LoadParallel, HIGH);
   pinMode(DataOutPin, OUTPUT);
   pinMode(ClockPin, OUTPUT);
   pinMode(LatchPin, OUTPUT);
   pinMode(DataInPin, INPUT);
+
+  WiFi.softAP(ssid, password);
+  WiFi.softAPConfig(local_ip, gateway, subnet);
+  delay(100);
+
+  setupHandler();
+  SetRelayNow();
+
 }
 
 void loop() {
@@ -49,4 +75,6 @@ void loop() {
   GetSerialData();
 
   UseSerialData();
+
+  server.handleClient();
 }

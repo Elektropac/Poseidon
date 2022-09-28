@@ -1,3 +1,19 @@
+
+ void SetRelayNow()
+      {
+        for(int i = 1; i < 17; i++)
+      {
+        //bitWrite(c, i, InBase[i]);
+        bitWrite(c, i, RelayState[i]);
+       // RelayState
+        
+      }
+      ShiftData();
+      //SendHTML();
+      }
+
+
+
 void serialDataHandler() {
   switch (Function) {
     case 0:
@@ -5,18 +21,33 @@ void serialDataHandler() {
       break;
 
     case 1:
-      Serial.println("Function 1");
-      for(int i = 0; i < 16; i++)
+      //Serial.println("Function 1");
+       for(int i = 1; i < 17; i++)
       {
-        //c = bitSet(InBase[i], i);
-        bitWrite(c, i, InBase[i]);
+        //bitWrite(c, i, InBase[i]);
+        bitWrite(c, i, RelayState[i]);
+
+        RelayState[i] = InBase[i];
+       // RelayState
         
       }
-      ShiftData();
+     SetRelayNow();
+     handle_Update();
+      
       break;
 
     case 2:
-      Serial.println("Function 2");
+       for(int i = 1; i < 17; i++)
+      {
+        //bitWrite(c, i, InBase[i]);
+        //bitWrite(c, i, RelayState[i]);
+
+        InputState[i] = InBase[i];
+       // RelayState
+        
+      }
+     //SetRelayNow();
+     handle_Update();
       break;
 
     case 3:
@@ -54,7 +85,7 @@ void GetSerialData() {
 void UseSerialData() {
   if ((Ccount > 0) and (Serial.available() < 1)) {
     int arrayNr = 0;
-    for (int i = 0; i < InBaseQuantity+2; i++)  //erase old data
+    for (int i = 1; i < InBaseQuantity+2; i++)  //erase old data
     {
       InBaseStr[i] = "";
     }
@@ -70,8 +101,8 @@ void UseSerialData() {
     // Address = InBaseStr[1].toInt();
     Function = InBaseStr[1].toInt();
 
-    for (int i = 0; i < 16; i++) {//-----------------------------------------------------------------
-      InBase[i] = InBaseStr[i + 3].toInt();
+    for (int i = 1; i < 17; i++) {//-----------------------------------------------------------------
+      InBase[i] = InBaseStr[i + 2].toInt();
     }
    
     serialDataHandler();
