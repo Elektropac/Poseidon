@@ -32,7 +32,7 @@ int ClockPin = 14;
 int LatchPin = 15;
 int LoadParallel = 0;
 
-int c = 0b0000000000000000;
+int c = 0b1111111111111111;
 
 int Address;   //this is for the I2C address 1-9 is for base 10-100 is for cells
 int Function;  //which function to run

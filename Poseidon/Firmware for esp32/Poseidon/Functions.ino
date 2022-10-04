@@ -5,13 +5,13 @@ void ShiftData()//this function is shifting data in and out
   //DataOutPin ()
   //DataInPin ()
 
+  //digitalWrite(LoadParallel, LOW);
+  //delayMicroseconds(5);
   digitalWrite(LoadParallel, LOW);
-  delayMicroseconds(5);
-  digitalWrite(LoadParallel, HIGH);
-  delayMicroseconds(5);
+  //delayMicroseconds(5);
   // digitalWrite(LoadParallel, LOW);
   // delayMicroseconds(5);
-
+//Sequense for serial out: 1 Latch low, 2 set dataoutpin, 3 Clock pin HIGH the LOW, 4 Latch High
 
   digitalWrite(LatchPin, LOW);
 
@@ -22,6 +22,7 @@ void ShiftData()//this function is shifting data in and out
     digitalWrite(ClockPin, HIGH);delayMicroseconds(10);
     digitalWrite(ClockPin, LOW);delayMicroseconds(10);
     //Serial.print(InputState[i]);Serial.print(",");
+    //shiftOut(DataOPutPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
 
   }
 
